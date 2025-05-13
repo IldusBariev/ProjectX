@@ -10,7 +10,7 @@ int main()
     
     
     int file_action;
-    printf("Ваше действие с файлом\n1 - Открытие для чтения\n2 - Открытие для записи\n3 -  Открытие для добавления\n4 - Открытие для чтения и записи\n5 -  Открытие для чтения и записи\n6 - Открытие для чтения и добавления\n");
+    printf("Ваше действие с файлом\n1 - Открытие для чтения\n2 - Открытие для записи\n3 -  Открытие для добавления\n4 - Открытие для чтения и записи\n5 - Открытие для чтения и добавления\n6 - удаление файла\n");
     scanf("%d", &file_action);
     
     switch(file_action) {
@@ -18,19 +18,19 @@ int main()
             printf("Ваша строка %s", read_file(file));
             break;
         case 2:
-            work_with_file(file, "w");
+            printf("Результат: %s", update_file(file));
             break;
         case 3:
-            work_with_file(file, "a");
+            printf("Результат: %s",append_file(file));
             break;
         case 4:
-            work_with_file(file, "r+");
+            printf("Результат: %s", read_and_work(file));
             break;
         case 5:
-            work_with_file(file, "w+");
+            printf("Результат: %s",read_and_append(file)); 
             break;
         case 6:
-            work_with_file(file, "a+"); 
+            file_delete(file);
             break;
         default:
             printf("Ошибка такого действие еще нет", file);
@@ -38,3 +38,5 @@ int main()
 
     return 1;
 }
+
+
