@@ -1,3 +1,7 @@
-void fs_delete(const char* file);
-int work_with_file(const char* file, const char* action);
+void file_delete(const char* file);
+
+char* append_file (const char* file);
 char* read_file(const char* file);
+char* update_file( const char* file);
+char* read_and_work(const char* file);
+char* read_and_append(const char* file);
