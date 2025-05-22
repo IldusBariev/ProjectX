@@ -1,42 +1,44 @@
 #include <stdio.h>
-
 #include "filesystem.h"
 
 int main()
 {
-    char file[255];
-    printf("Input your file\n");
-    scanf("%s", file);
+    while (1) {
+        
+        int file_action;
+        printf("Ваше действие с файлом\n1 - Отркыть/Создать файл\n2 - Прочитать файл\n3 - Удаление файла\n4 -Добавить новый файла \n5 - Обновить файл\n0 -Выйти из программы\n");
+        scanf("%d", &file_action);
     
+        if (file_action == 0) break;
+        
+        char filename[255];
+        printf("Input your file\n");
+        scanf("%s", filename);
     
-    int file_action;
-    printf("Ваше действие с файлом\n1 - Открытие для чтения\n2 - Открытие для записи\n3 -  Открытие для добавления\n4 - Открытие для чтения и записи\n5 - Открытие для чтения и добавления\n6 - удаление файла\n");
-    scanf("%d", &file_action);
+        FILE* fp;
+        
     
-    switch(file_action) {
-        case 1:
-            printf("Ваша строка %s", read_file(file));
-            break;
-        case 2:
-            printf("Результат: %s", update_file(file));
-            break;
-        case 3:
-            printf("Результат: %s",append_file(file));
-            break;
-        case 4:
-            printf("Результат: %s", read_and_work(file));
-            break;
-        case 5:
-            printf("Результат: %s",read_and_append(file)); 
-            break;
-        case 6:
-            file_delete(file);
-            break;
-        default:
-            printf("Ошибка такого действие еще нет", file);
+        switch(file_action) {
+            case 1:
+                fp = create_open_file(filename);
+                break;
+            case 2:
+                fp = fopen(filename, "r");
+                printf("Результат:\n%s\n", view_file(filename));
+                break;
+            case 3:
+                printf("Результат: %s\n", delete_file(filename));
+                break;
+            case 4:
+                printf("Результат: %s\n", add_file(filename));
+                break;
+            case 5:
+                printf("Результат: %s\n", modify_file(filename)); 
+                break;
+            default:
+                printf("Ошибка такого действие еще нет");
+        }
     }
 
     return 1;
 }
-
-
