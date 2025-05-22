@@ -66,7 +66,7 @@ char* add_file(const char* main_filename) {
     
     
     FILE* fp = fopen(filename, "r");
-    if (fp == NULL) {
+    if (fp) {
         return "ERROR\n";
     }
     fclose(fp);
