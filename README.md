@@ -7,8 +7,9 @@
 
 ## Компиляция
 Для компиляции используйте команду:
+```
 gcc main.c filesystem.c -o fs_program
-
+```
 ## filesystem.h
 Заголовочный файл. Содержит объявлление функций:
 -create_open_file
