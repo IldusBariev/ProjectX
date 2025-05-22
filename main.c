@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "filesystem.h"
 
+// Компиляция: gcc main.c filesystem.c -o fs_program
 int main()
 {
     while (1) {
