@@ -71,6 +71,12 @@ char* add_file(const char* main_filename) {
     }
     fclose(fp);
     
+    fp = fopen(main_filename, "r");
+    if (fp != NULL) {
+        return "ERROR\n";
+    }
+    fclose(fp);
+    
     FILE* fs_file = fopen(main_filename, "a+");
     
     char content[1024];
