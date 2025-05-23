@@ -16,8 +16,6 @@ char* view_file(const char* filename) {
     
     FILE* fs_file = fopen(filename, "r");
 
-    rewind(fs_file);
-
     char line[MAX_SIZE];
     int found = 0;
     char content[MAX_SIZE]; 
@@ -82,36 +80,28 @@ char* add_file(const char* main_filename) {
     char content[1024];
     printf("Введите содержимое файла\n");
     scanf("%s", content);
-
-    fseek(fs_file, 0, SEEK_END); // перемещает указатель
     
     fprintf(fs_file, "%s\n", filename);
     fprintf(fs_file, "%s\n", content);
     fprintf(fs_file, "/\n");
     
-    fflush(fs_file); // очищает буфер
-    
     return "GOOD";
 }
 
 void modify_file(const char* fs_filename) {
-    // Запрашиваем имя файла для изменения
-    char filename[256];
-    printf("Введите имя файла для изменения: ");
-    scanf(" %255[^\n]", filename);
-
     // Открываем файловую систему для чтения, чтобы проверить существует ли такой файл
     FILE* fs_file = fopen(fs_filename, "r");
     if (fs_file == NULL) {
         printf("ERROR: Не удалось открыть файловую систему\n");
         return;
     }
+    fclose(fs_file);
 
     // Временный файл
-    FILE* temp_file = fopen("temp_fs.txt", "w");
-    if (temp_file == NULL) {
+    FILE* file = fopen(fs_filename, "w");
+    if (file == NULL) {
         printf("ERROR: Не удалось создать временный файл\n");
-        fclose(fs_file);
+        fclose(file);
         return;
     }
 
@@ -119,45 +109,20 @@ void modify_file(const char* fs_filename) {
     char new_content[1024];
     printf("Введите новое содержимое для файла '%s':\n", filename);
     scanf(" %1023[^\n]", new_content);
-    getchar(); // Очищаем буфер ввода
 
     char line[256];
     int found = 0;
     int copying = 1;
 
     // Обрабатко файловой системы
-    while (fgets(line, sizeof(line), fs_file) != NULL) {
-        line[strcspn(line, "\n")] = '\0'; // Удаляем символ новой строки
-
-        if (!found) {
-            if (strcmp(line, filename) == 0) {
-                found = 1;
-                copying = 0;
-                fprintf(temp_file, "%s\n%s\n", line, new_content);
-            } else {
-                fprintf(temp_file, "%s\n", line);
-            }
+    for (int i = 0; i <= MAX_SIZE; i++) {
+        if (text[i] == '\0') {
+            fprintf("\0", file); // закрываем слово
         } else {
-            if (copying) {
-                fprintf(temp_file, "%s\n", line);
-            } else if (line[0] == '/') {
-                copying = 1;
-                fprintf(temp_file, "%s\n", line);
-            }
+            fprintf("%c", new_content[i], file);
         }
     }
 
-    // Закрываем файла и замена оригинального
-    fclose(fs_file);
-    fclose(temp_file);
-
-    remove(fs_filename);
-    rename("temp_fs.txt", fs_filename);
-
-    if (found) {
-        printf("Файл '%s' успешно изменен\n", filename);
-    } else {
-        printf("Файл '%s' не найден\n", filename);
-        remove("temp_fs.txt"); // Удаление временного файла если нет основного
-    }
+    // Закрываем файл
+    fclose(file);
 }
